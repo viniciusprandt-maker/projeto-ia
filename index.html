@@ -1,114 +1,87 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Inteligência Artificial</title>
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: linear-gradient(to right, #1e3c72, #2a5298);
-    color: #333;
-}
-
-header {
-    text-align: center;
-    padding: 40px;
-    color: white;
-}
-
-header h1 {
-    font-size: 40px;
-}
-
-.container {
-    padding: 20px;
-}
-
-.card {
-    background: white;
-    padding: 20px;
-    margin: 20px auto;
-    border-radius: 12px;
-    max-width: 800px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: transform 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.03);
-}
-
-h2 {
-    color: #1e3c72;
-}
-
-ul {
-    line-height: 1.8;
-}
-
-img {
-    width: 100%;
-    border-radius: 10px;
-    margin-top: 10px;
-}
-
-footer {
-    text-align: center;
-    padding: 15px;
-    background: #111;
-    color: white;
-}
-</style>
-
+  <meta charset="UTF-8">
+  <title>Jogo Quente ou Frio</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 50px;
+      background-color: #f0f0f0;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
-    <h1>🤖 Inteligência Artificial</h1>
-    <p>Vantagens e Desvantagens</p>
-</header>
+  <h1>🔥❄️ Jogo: Quente ou Frio</h1>
+  <p>Tente adivinhar o número entre <b>10 e 100</b></p>
+  <p>Você tem <b>10 tentativas</b></p>
 
-<div class="container">
+  <input type="number" id="palpite" placeholder="Digite seu palpite">
+  <br>
+  <button onclick="tentar()">Tentar</button>
 
-<div class="card">
-    <h2>O que é IA?</h2>
-    <p>A Inteligência Artificial é uma tecnologia que permite que máquinas aprendam, tomem decisões e realizem tarefas semelhantes às humanas.</p>
-    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995">
-</div>
+  <div id="resultado"></div>
 
-<div class="card">
-    <h2>✅ Vantagens</h2>
-    <ul>
-        <li>Automação de tarefas repetitivas</li>
-        <li>Aumento da produtividade</li>
-        <li>Avanços na medicina</li>
-        <li>Melhoria na educação</li>
-    </ul>
-</div>
+  <!-- Sons -->
+  <audio id="somAcerto" src="https://www.soundjay.com/buttons/sounds/button-4.mp3"></audio>
+  <audio id="somErro" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
 
-<div class="card">
-    <h2>⚠️ Desvantagens</h2>
-    <ul>
-        <li>Substituição de empregos</li>
-        <li>Dependência tecnológica</li>
-        <li>Riscos de segurança</li>
-        <li>Fake news e uso indevido</li>
-    </ul>
-</div>
+  <script>
+    let numeroSecreto = Math.floor(Math.random() * 91) + 10;
+    let tentativas = 10;
 
-<div class="card">
-    <h2>🌍 Conclusão</h2>
-    <p>A Inteligência Artificial traz muitos benefícios, mas também desafios. O importante é usar essa tecnologia de forma responsável.</p>
-</div>
+    function tentar() {
+      let palpite = parseInt(document.getElementById("palpite").value);
+      let resultado = document.getElementById("resultado");
 
-</div>
+      if (isNaN(palpite)) {
+        resultado.innerHTML = "⚠️ Digite um número válido!";
+        return;
+      }
 
-<footer>
-    <p>Projeto escolar • 2026</p>
-</footer>
+      if (tentativas <= 0) {
+        resultado.innerHTML = "💀 Suas tentativas acabaram! O número era " + numeroSecreto;
+        return;
+      }
+
+      tentativas--;
+
+      let diferenca = Math.abs(numeroSecreto - palpite);
+
+      if (palpite === numeroSecreto) {
+        resultado.innerHTML = "🎉 Acertou! O número era " + numeroSecreto;
+        document.getElementById("somAcerto").play(); // som de acerto
+        return;
+      } else {
+        document.getElementById("somErro").play(); // 🔊 som de erro
+      }
+
+      if (diferenca <= 5) {
+        resultado.innerHTML = "🔥 Muito quente! Tentativas restantes: " + tentativas;
+      } else if (diferenca <= 15) {
+        resultado.innerHTML = "🌡️ Quente... Tentativas restantes: " + tentativas;
+      } else if (diferenca <= 30) {
+        resultado.innerHTML = "❄️ Frio... Tentativas restantes: " + tentativas;
+      } else {
+        resultado.innerHTML = "🥶 Muito frio! Tentativas restantes: " + tentativas;
+      }
+
+      if (tentativas === 0) {
+        resultado.innerHTML += "<br>💀 Fim de jogo! O número era " + numeroSecreto;
+      }
+    }
+  </script>
 
 </body>
 </html>
